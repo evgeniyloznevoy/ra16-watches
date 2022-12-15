@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import WatchesAddForm from './components/WatchesAddForm';
+import WatchesList from './components/WatchesList';
+import { nanoid } from 'nanoid';
 
 function App() {
+  const [watches, setWatches] = useState([{
+    name: 'Moscow',
+    timeZone: '3',
+    id: nanoid()
+  }]);
+
+  const onAdd = (form) => {
+    setWatches((prev) => ([...prev, form]))
+  }
+
+  const onDelete = (id) => {
+    setWatches((prev) =>
+      prev.filter((item) => item.id !== id)
+    )
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <WatchesAddForm onAdd={onAdd} />
+      <WatchesList watches={watches} onDelete={onDelete} />
+
     </div>
   );
 }
